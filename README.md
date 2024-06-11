@@ -4,7 +4,7 @@
 
 ### Installation
 ``` bash
-$ git clone https://github.com/Capstone-Everybuddy/frontend.git
+$ git clone https://github.com/Rolling-Goorm/Code-Adventure-FE
 $ npm install
 $ npm start
 ```
