@@ -1,4 +1,4 @@
-# Code Adventure Frontend
+# 🚌 Code Adventure Frontend
 
 ## 시작 가이드
 
