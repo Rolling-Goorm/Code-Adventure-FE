@@ -7,14 +7,13 @@ const Layout = {
     display: flex;
     align-items: center;
     flex-direction: column;
-
     border-radius: 60px 60px 0px 0px;
-    padding: 35px 30px 0px 30px;
+    padding: 10px 30px 0px 30px;
     background-image: url(${background});
     background-size: cover;
     background-position: center;
     width: 70%;
-    height: 700px;
+    height: 650px;
   `,
 };
 
