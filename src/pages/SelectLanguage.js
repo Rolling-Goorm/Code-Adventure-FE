@@ -3,7 +3,7 @@ import Layout from '../components/Layout';
 import PropTypes from 'prop-types';
 import Main from '../components/Main';
 import Header from '../components/Header';
-import { Name, Strong, Button } from '../components/styled';
+import { Name, Strong, LanguageButton } from '../components/styled';
 
 function SelectLanguage({ isLoggedIn, setIsLoggedIn }) {
   return (
@@ -13,8 +13,8 @@ function SelectLanguage({ isLoggedIn, setIsLoggedIn }) {
         <Name>
           사용할 <Strong>언어</Strong>를 선택해주세요
         </Name>
-        <Button>JAVA</Button>
-        <Button>JAVASCRIPT</Button>
+        <LanguageButton>JAVA</LanguageButton>
+        <LanguageButton>JAVASCRIPT</LanguageButton>
       </Layout.PageContent>
     </Main.Wrapper>
   );

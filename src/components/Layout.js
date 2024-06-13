@@ -7,8 +7,7 @@ const Layout = {
     display: flex;
     align-items: center;
     flex-direction: column;
-    margin-top: 30px;
-    /* border-radius: 60px 60px 60px 60px; */
+    border-radius: 60px 60px 0px 0px;
     padding: 10px 30px 0px 30px;
     background-image: url(${background});
     background-size: cover;

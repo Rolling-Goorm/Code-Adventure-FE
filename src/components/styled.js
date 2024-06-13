@@ -44,7 +44,7 @@ export const Strong = styled.span`
   color: yellow;
 `;
 
-export const Button = styled.button`
+export const LanguageButton = styled.button`
   display: block;
   margin: 10px auto;
   padding: 50px 20px;
