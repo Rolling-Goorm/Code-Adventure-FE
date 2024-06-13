@@ -59,8 +59,10 @@ export const Button = styled.button`
     -1px 1px 0 #000,
     1px 1px 0 #000;
   cursor: pointer;
+  transition: font-size 0.3s ease;
 
   &:hover {
+    font-size: 33px;
     color: yellow;
   }
 
