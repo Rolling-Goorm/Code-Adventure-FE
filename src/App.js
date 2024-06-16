@@ -6,6 +6,8 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import SelectLanguage from './pages/SelectLanguage';
 import theme from './styles/theme';
 import Start from './pages/Start';
+import Mypages from './pages/Mypages';
+import Signin from './pages/Signin';
 
 function App() {
   return (
@@ -15,6 +17,9 @@ function App() {
         <Routes>
           <Route path="/selectLanguage" element={<SelectLanguage />} />\
           <Route path="/" element={<Start />} />
+          <Route path="/Signin" element={<Signin />} />
+          <Route path="/Signup" element={<Signup />} />
+          <Route path="/Mypage" element={<Mypages />} />
         </Routes>
       </BrowserRouter>
     </ThemeProvider>

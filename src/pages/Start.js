@@ -12,7 +12,7 @@ function Start() {
       <Layout.PageContent>
         <Name>Code Adventure</Name>
         <Spacer />
-        <CloudButton>Login</CloudButton>
+        <CloudButton onClick="/Login">Login</CloudButton>
       </Layout.PageContent>
     </Main.Wrapper>
   );
