@@ -1,0 +1,70 @@
+import React from 'react';
+import PropTypes from 'prop-types';
+import styled from 'styled-components';
+import Title from '../assets/title.png'; // 업로드된 파일 경로
+
+// Styled components
+const HeaderContainer = styled.header`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 80px;
+  background-color: white;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.02);
+  z-index: 1000; /* 본문 내용 위에 있도록 설정 */
+`;
+
+const LogoContainer = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const Logo = styled.img`
+  height: 40px;
+  margin-left: 50px;
+`;
+
+const Nav = styled.nav`
+  display: flex;
+  gap: 30px;
+  margin-right: 50px;
+`;
+
+// Header component
+const Header = ({ isLoggedIn, setIsLoggedIn }) => {
+  return (
+    <HeaderContainer>
+      <LogoContainer>
+        <Logo src={Title} alt="Logo" />
+      </LogoContainer>
+      <Nav>
+        {isLoggedIn ? (
+          <>
+            <a href="/">홈</a>
+            <a href="">마이 페이지</a>
+            <a href="">상점</a>
+            <a href="/" onClick={() => setIsLoggedIn(false)}>
+              로그아웃
+            </a>
+          </>
+        ) : (
+          <>
+            <a href="">로그인</a>
+            <a href="">회원가입</a>
+          </>
+        )}
+      </Nav>
+    </HeaderContainer>
+  );
+};
+
+Header.propTypes = {
+  isLoggedIn: PropTypes.bool.isRequired,
+  setIsLoggedIn: PropTypes.func.isRequired,
+};
+
+export default Header;
