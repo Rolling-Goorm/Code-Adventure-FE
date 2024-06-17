@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled, { keyframes } from 'styled-components';
 import Layout from '../components/Layout';
 import PropTypes from 'prop-types';
@@ -13,6 +14,13 @@ function SelectLanguage({ isLoggedIn, setIsLoggedIn }) {
 
   const handleLanguageSelection = (language) => {
     setLanguageType(language);
+  };
+
+  const navigate = useNavigate();
+
+  const handleLanguageMove = () => {
+    console.log(`selectLanguage / Type selected: ${languageType}`); // 콘솔 로그 추가
+    navigate('/selectStage', { state: { languageType } }); // selectStage 페이지로 이동하면서 languageType 상태 전달
   };
 
   return (
@@ -34,7 +42,7 @@ function SelectLanguage({ isLoggedIn, setIsLoggedIn }) {
             <SpeechBubble>
               <TextWrapper>
                 {languageType.toUpperCase()}로 모험 시작하기
-                <NextArrow>→</NextArrow>
+                <NextArrow onClick={handleLanguageMove}>→</NextArrow>
               </TextWrapper>
             </SpeechBubble>
           </SpeechBubbleWrapper>
