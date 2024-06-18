@@ -1,26 +1,28 @@
 import styled from 'styled-components';
+import background from '../assets/background.png';
 
-const Wrapper = styled.div`
+export const MainWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   height: 100vh;
-  background-color: #f0f0f0;
+  background: url(${background}) no-repeat center center fixed;
+  background-size: cover;
 `;
 
-const PageContent = styled.div`
+export const PageContent = styled.div`
   padding: 20px;
   background: white;
   border-radius: 5px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 `;
 
-const Title = styled.h1`
+export const Title = styled.h1`
   margin-bottom: 20px;
 `;
 
-const Input = styled.input`
+export const Input = styled.input`
   width: 100%;
   padding: 10px;
   margin: 10px 0;
@@ -28,7 +30,7 @@ const Input = styled.input`
   border-radius: 5px;
 `;
 
-const Button = styled.button`
+export const Button = styled.button`
   width: 100%;
   padding: 10px;
   margin: 10px 0;
@@ -42,10 +44,33 @@ const Button = styled.button`
   }
 `;
 
-const ErrorMessage = styled.p`
+export const Spacer = styled.div`
+  height: 20px;
+`;
+
+export const ErrorMessage = styled.p`
   color: red;
 `;
 
-const Spacer = styled.div`
-  height: 20px;
+export const InputWrapper = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-bottom: 10px;
+
+  & > input {
+    flex: 1 1 48%;
+  }
+`;
+export const FormWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+export const RowWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 20px;
 `;
