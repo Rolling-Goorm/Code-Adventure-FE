@@ -4,7 +4,8 @@ import { ThemeProvider } from 'styled-components';
 import GlobalStyle from './styles/global-styles';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import SelectLanguage from './pages/SelectLanguage';
-import SelectStage from './pages/SelectStage';
+import SelectCategory from './pages/SelectCategory';
+import SelectStages from './pages/SelectStages';
 import CorrectAnswer from './pages/CorrectAnswer';
 import theme from './styles/theme';
 import Start from './pages/Start';
@@ -27,7 +28,7 @@ function App() {
               />
             }
           />
-          <Route path="selectStage" element={<SelectStage />} />
+          <Route path="selectcategory" element={<SelectCategory />} />
           <Route
             path="/correctAnswer"
             element={
@@ -38,6 +39,7 @@ function App() {
               />
             }
           />
+          <Route path="selectstages" element={<SelectStages />} />
         </Routes>
       </BrowserRouter>
     </ThemeProvider>
