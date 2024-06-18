@@ -2,7 +2,7 @@ import React from 'react';
 import Layout from '../components/Layout';
 import Main from '../components/Main';
 
-import { Name } from '../components/styled';
+import { Name } from '../styles/styled';
 import CloudButton from '../components/CloudButton';
 import { Spacer } from '../styles/StartStyle';
 
