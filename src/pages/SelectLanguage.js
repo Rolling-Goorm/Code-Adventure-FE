@@ -20,7 +20,7 @@ function SelectLanguage({ isLoggedIn, setIsLoggedIn }) {
 
   const handleLanguageMove = () => {
     console.log(`selectLanguage / Type selected: ${languageType}`); // 콘솔 로그 추가
-    navigate('/selectStage', { state: { languageType } }); // selectStage 페이지로 이동하면서 languageType 상태 전달
+    navigate('/selectCategory', { state: { languageType } }); // selectStage 페이지로 이동하면서 languageType 상태 전달
   };
 
   return (
