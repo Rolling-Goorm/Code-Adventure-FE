@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Layout from '../components/Layout';
 import Main from '../components/Main';
-import { Name } from '../components/styled';
+import { Name } from '../styles/styled';
 
 function Mypages(props) {
   const [userInfo, setUserInfo] = useState(null);
@@ -66,18 +66,7 @@ function Mypages(props) {
 
   return (
     <Main.Wrapper>
-      <Layout.PageContent>
-        <Name>마이페이지</Name>
-        <UserInfoItem>아이디: {userInfo.loginId}</UserInfoItem>
-        <UserInfoItem>이름: {userInfo.name}</UserInfoItem>
-        <UserInfoItem>닉네임: {userInfo.nickname}</UserInfoItem>
-        <UserInfoItem>선호 언어 : {userInfo.preferredLanguage}</UserInfoItem>
-        <UserInfoItem>생일 : {userInfo.birth}</UserInfoItem>
-        <UserInfoItem>이메일 : {userInfo.email}</UserInfoItem>
-        <UserInfoItem>전화번호 : {userInfo.phoneNumber}</UserInfoItem>
-      </Layout.PageContent>
-      <Button onClick={handleSave}>저장</Button>
-      <Button onClick="/">메인으로 돌아가기</Button>
+      <Layout.PageContent></Layout.PageContent>
     </Main.Wrapper>
   );
 }

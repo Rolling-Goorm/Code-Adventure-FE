@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import {
   Title,
   ErrorMessage,
@@ -8,14 +8,16 @@ import {
 } from '../styles/LoginStyle';
 import Layout from '../components/Layout';
 import Main from '../components/Main';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { AuthContext } from '../components/AuthContext';
 
 const Signin = () => {
   const [loginId, setLoginId] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
   const [error, setError] = useState('');
+  const { login } = useContext(AuthContext); // AuthContext 사용
+  const navigate = useNavigate();
 
-  // 로그인 핸들러 함수
   const handleLogin = async (e) => {
     e.preventDefault();
     if (!loginId || !loginPassword) {
@@ -34,9 +36,23 @@ const Signin = () => {
           throw new Error('Login failed');
         }
 
-        const data = await response.json();
+        const data = await response.text(); // 응답을 텍스트로 받음
         console.log('Login successful', data);
+
+        // JSON 파싱 시도
+        try {
+          const jsonData = JSON.parse(data);
+          console.log('Parsed JSON:', jsonData);
+          // JSON 데이터에 따라 후속 처리
+          login(jsonData); // 로그인 정보를 AuthContext에 저장
+        } catch (parseError) {
+          console.log('Response is not JSON. Using plain text data.');
+          // 로그인 정보를 적절히 설정 (여기서는 응답이 JSON이 아니므로 예시로 간단히 처리)
+          login({ loginId });
+        }
+
         setError('');
+        navigate('/selectLanguage'); // 로그인 성공 시 페이지 이동
       } catch (error) {
         console.error('Error:', error);
         setError('Login failed');
