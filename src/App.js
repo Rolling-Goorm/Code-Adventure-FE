@@ -8,6 +8,7 @@ import SelectLanguage from './pages/SelectLanguage';
 import SelectCategory from './pages/SelectCategory';
 import SelectStages from './pages/SelectStages';
 import CorrectAnswer from './pages/CorrectAnswer';
+import WrongAnswer from './pages/WrongAnswer';
 import theme from './styles/theme';
 import Start from './pages/Start';
 import Mypages from './pages/Mypages';
