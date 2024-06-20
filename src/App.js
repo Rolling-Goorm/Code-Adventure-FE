@@ -48,6 +48,7 @@ function App() {
                 />
               }
             />
+            <Route path="wrongAnswer" element={<WrongAnswer />} />
             <Route path="selectstages" element={<SelectStages />} />
           </Routes>
         </BrowserRouter>

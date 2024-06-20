@@ -6,13 +6,11 @@ import Header from '../components/Header';
 import { Name } from '../styles/styled';
 
 function WrongAnswer({ isLoggedIn, setIsLoggedIn, cntLife }) {
-  const rewardCoin = cntLife * 10;
-
   return (
     <Main.Wrapper>
       <Header isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
       <Layout.PageContent>
-        <Name>{`${rewardCoin}을 얻었습니다.`}</Name>
+        <Name>{`${cntLife}의 목숨이 남았습니다.`}</Name>
       </Layout.PageContent>
     </Main.Wrapper>
   );
