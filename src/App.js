@@ -9,6 +9,9 @@ import SelectStages from './pages/SelectStages';
 import CorrectAnswer from './pages/CorrectAnswer';
 import theme from './styles/theme';
 import Start from './pages/Start';
+import Mypages from './pages/Mypages';
+import Signin from './pages/Signin';
+import Signup from './pages/Signup';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
