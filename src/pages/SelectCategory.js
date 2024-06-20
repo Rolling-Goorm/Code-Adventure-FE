@@ -67,7 +67,7 @@ const SelectCategory = ({ setIsLoggedIn }) => {
 
   return (
     <Main.Wrapper>
-      <Header isLoggedIn={!!user} setIsLoggedIn={setIsLoggedIn} />
+      <Header isLoggedIn={user} setIsLoggedIn={setIsLoggedIn} />
       <Layout.PageContent>
         <Name>
           <Strong>카테고리</Strong>를 선택해주세요
