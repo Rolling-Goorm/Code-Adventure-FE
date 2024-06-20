@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Layout from '../components/Layout';
 import Main from '../components/Main';
 import Header from '../components/Header';
-import { Name } from '../components/styled';
+import { Name } from '../styles/styled';
 
 function CorrectAnswer({ isLoggedIn, setIsLoggedIn, cntLife }) {
   const rewardCoin = cntLife * 10;
