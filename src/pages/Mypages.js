@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Layout from '../components/Layout';
 import Main from '../components/Main';
 import { Name } from '../components/styled';
+import { UserInfoItem } from '../styles/LoginStyle';
 
 function Mypages(props) {
   const [userInfo, setUserInfo] = useState(null);
