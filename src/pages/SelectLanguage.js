@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+// src/pages/SelectLanguage.js
+import React, { useState, useContext, useEffect } from 'react';
+import { AuthContext } from '../components/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import styled, { keyframes } from 'styled-components';
 import Layout from '../components/Layout';
@@ -9,40 +11,78 @@ import { Name, Strong, LanguageButton } from '../styles/styled';
 import AvatarImg from '../assets/avatar.png';
 import sayImg from '../assets/say.png';
 
-function SelectLanguage({ isLoggedIn, setIsLoggedIn }) {
-  const [languageType, setLanguageType] = useState('');
+const mockLanguages = [
+  {
+    id: 1,
+    name: 'JAVA',
+  },
+  {
+    id: 2,
+    name: 'JAVASCRIPT',
+  },
+];
 
-  const handleLanguageSelection = (language) => {
-    setLanguageType(language);
-  };
+const SelectLanguage = ({ setIsLoggedIn }) => {
+  const { user } = useContext(AuthContext); // AuthContext 사용
+  const [speechBubbleText, setSpeechBubbleText] = useState('');
+  const [languages] = useState(mockLanguages); // 목 데이터를 사용
+  const [loading] = useState(false);
+  const [error] = useState(null);
+  const [selectedLanguage, setSelectedLanguage] = useState(null);
+
+  useEffect(() => {
+    if (user) {
+      setSpeechBubbleText(
+        `${user.nickname}님, 환영합니다! 언어를 선택하고 모험을 시작해요`,
+      );
+      console.log('User info:', user); // 유저 정보 콘솔에 출력
+    }
+  }, [user]);
 
   const navigate = useNavigate();
 
-  const handleLanguageMove = () => {
-    console.log(`selectLanguage / Type selected: ${languageType}`); // 콘솔 로그 추가
-    navigate('/selectCategory', { state: { languageType } }); // selectStage 페이지로 이동하면서 languageType 상태 전달
+  const handleLanguageSelection = (language) => {
+    setSelectedLanguage(language);
+    setSpeechBubbleText(`${language.name.toUpperCase()}로 모험 시작하기!!`);
   };
+
+  const handleLanguageMove = () => {
+    console.log(`selectLanguage / Type selected: ${selectedLanguage.name}`); // 콘솔 로그 추가
+    navigate('/selectCategory', {
+      state: {
+        languageType: selectedLanguage.name,
+        programmingLanguageId: selectedLanguage.id,
+      },
+    }); // selectStage 페이지로 이동하면서 languageType 상태 전달
+  };
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error loading data</div>;
 
   return (
     <Main.Wrapper>
-      <Header isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
+      <Header isLoggedIn={user} setIsLoggedIn={setIsLoggedIn} />
       <Layout.PageContent>
         <Name>
           사용할 <Strong>언어</Strong>를 선택해주세요
         </Name>
-        <LanguageButton onClick={() => handleLanguageSelection('java')}>
-          JAVA
-        </LanguageButton>
-        <LanguageButton onClick={() => handleLanguageSelection('javascript')}>
-          JAVASCRIPT
-        </LanguageButton>
-        {languageType && (
+        {languages.map((language) => (
+          <LanguageButton
+            key={language.id}
+            onClick={() => handleLanguageSelection(language)}
+          >
+            {language.name.toUpperCase()}
+          </LanguageButton>
+        ))}
+        {speechBubbleText && (
           <SpeechBubbleWrapper>
             <Avatar src={AvatarImg} alt="avatarImg" />
             <SpeechBubble>
               <TextWrapper>
-                {languageType.toUpperCase()}로 모험 시작하기
-                <NextArrow onClick={handleLanguageMove}>→</NextArrow>
+                {speechBubbleText}
+                {selectedLanguage && (
+                  <NextArrow onClick={handleLanguageMove}>→</NextArrow>
+                )}
               </TextWrapper>
             </SpeechBubble>
           </SpeechBubbleWrapper>
@@ -50,10 +90,9 @@ function SelectLanguage({ isLoggedIn, setIsLoggedIn }) {
       </Layout.PageContent>
     </Main.Wrapper>
   );
-}
+};
 
 SelectLanguage.propTypes = {
-  isLoggedIn: PropTypes.bool.isRequired,
   setIsLoggedIn: PropTypes.func.isRequired,
 };
 
@@ -103,6 +142,7 @@ const TextWrapper = styled.div`
   display: flex;
   flex: 1; /* 남은 공간을 차지하게 설정 */
 `;
+
 const NextArrow = styled.div`
   cursor: pointer;
   font-size: 24px;
