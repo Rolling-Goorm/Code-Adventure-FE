@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Layout from '../components/Layout';
 import Main from '../components/Main';
 import { Name } from '../components/styled';
@@ -33,12 +33,14 @@ function Mypages(props) {
         });
       });
   }, []);
+
   const handleChange = (e) => {
     setEditInfo({
       ...editInfo,
       [e.target.name]: e.target.value,
     });
   };
+
   const handleSave = () => {
     fetch(`http://localhost:8080/users/${userInfo.id}`, {
       method: 'PATCH',
@@ -74,6 +76,7 @@ function Mypages(props) {
         <UserInfoItem>이메일 : {userInfo.email}</UserInfoItem>
         <UserInfoItem>전화번호 : {userInfo.phoneNumber}</UserInfoItem>
       </Layout.PageContent>
+      <Button onClick={handleSave}>저장</Button>
       <Button onClick="/">메인으로 돌아가기</Button>
     </Main.Wrapper>
   );
