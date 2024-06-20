@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { useQuery } from 'react-query';
+import { fetchProgrammingLanguages } from '../api/api';
 import { useNavigate } from 'react-router-dom';
 import styled, { keyframes } from 'styled-components';
 import Layout from '../components/Layout';
@@ -10,18 +12,24 @@ import AvatarImg from '../assets/avatar.png';
 import sayImg from '../assets/say.png';
 
 function SelectLanguage({ isLoggedIn, setIsLoggedIn }) {
+  const {
+    data: languages,
+    isLoading,
+    error,
+  } = useQuery('programmingLanguages', fetchProgrammingLanguages);
   const [languageType, setLanguageType] = useState('');
+  const navigate = useNavigate();
 
   const handleLanguageSelection = (language) => {
     setLanguageType(language);
   };
 
-  const navigate = useNavigate();
-
   const handleLanguageMove = () => {
-    console.log(`selectLanguage / Type selected: ${languageType}`); // 콘솔 로그 추가
-    navigate('/selectCategory', { state: { languageType } }); // selectStage 페이지로 이동하면서 languageType 상태 전달
+    navigate('/selectCategory', { state: { languageType } });
   };
+
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error loading data</div>;
 
   return (
     <Main.Wrapper>
@@ -30,12 +38,14 @@ function SelectLanguage({ isLoggedIn, setIsLoggedIn }) {
         <Name>
           사용할 <Strong>언어</Strong>를 선택해주세요
         </Name>
-        <LanguageButton onClick={() => handleLanguageSelection('java')}>
-          JAVA
-        </LanguageButton>
-        <LanguageButton onClick={() => handleLanguageSelection('javascript')}>
-          JAVASCRIPT
-        </LanguageButton>
+        {languages.map((language) => (
+          <LanguageButton
+            key={language.id}
+            onClick={() => handleLanguageSelection(language.name)}
+          >
+            {language.name.toUpperCase()}
+          </LanguageButton>
+        ))}
         {languageType && (
           <SpeechBubbleWrapper>
             <Avatar src={AvatarImg} alt="avatarImg" />

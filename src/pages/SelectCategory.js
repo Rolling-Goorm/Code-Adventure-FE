@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import styled, { keyframes } from 'styled-components';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { useQuery } from 'react-query';
+import { fetchCategories } from '../api/api';
 import Layout from '../components/Layout';
 import PropTypes from 'prop-types';
 import Main from '../components/Main';
@@ -171,12 +173,16 @@ function SelectCategory({ isLoggedIn, setIsLoggedIn }) {
   const location = useLocation();
   const navigate = useNavigate();
   const { languageType } = location.state || {};
-  const [categories, setCategories] = useState([]);
+  const {
+    data: categories,
+    isLoading,
+    error,
+  } = useQuery(['categories', languageType], () =>
+    fetchCategories(languageType),
+  );
 
-  useEffect(() => {
-    // Simulate API call with mock data
-    setCategories(mockData);
-  }, []);
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error loading data</div>;
 
   const getBackgroundPosition = (index) => {
     const positions = [
@@ -193,7 +199,7 @@ function SelectCategory({ isLoggedIn, setIsLoggedIn }) {
   };
 
   const handleCategoryClick = (categoryId) => {
-    navigate('/selectstages', { state: { languageType, categoryId } });
+    navigate('/selectStages', { state: { languageType, categoryId } });
   };
 
   return (
@@ -227,6 +233,10 @@ function SelectCategory({ isLoggedIn, setIsLoggedIn }) {
   );
 }
 
+SelectCategory.propTypes = {
+  isLoggedIn: PropTypes.bool.isRequired,
+  setIsLoggedIn: PropTypes.func.isRequired,
+};
 SelectCategory.propTypes = {
   isLoggedIn: PropTypes.bool.isRequired,
   setIsLoggedIn: PropTypes.func.isRequired,
