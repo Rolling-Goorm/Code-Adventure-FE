@@ -7,6 +7,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import SelectLanguage from './pages/SelectLanguage';
 import SelectCategory from './pages/SelectCategory';
 import SelectStages from './pages/SelectStages';
+import Solve from './pages/Solve';
 import CorrectAnswer from './pages/CorrectAnswer';
 import WrongAnswer from './pages/WrongAnswer';
 import theme from './styles/theme';
@@ -39,6 +40,17 @@ function App() {
             />
             <Route path="selectcategory" element={<SelectCategory />} />
             <Route
+              path="/solve"
+              element={
+                <Solve
+                  isLoggedIn={isLoggedIn}
+                  setIsLoggedIn={setIsLoggedIn}
+                  cntLife={cntLife}
+                  setCntLife={setCntLife}
+                />
+              }
+            />
+            <Route
               path="/correctAnswer"
               element={
                 <CorrectAnswer
@@ -48,7 +60,16 @@ function App() {
                 />
               }
             />
-            <Route path="wrongAnswer" element={<WrongAnswer />} />
+            <Route
+              path="/wrongAnswer"
+              element={
+                <WrongAnswer
+                  isLoggedIn={isLoggedIn}
+                  setIsLoggedIn={setIsLoggedIn}
+                  cntLife={cntLife}
+                />
+              }
+            />
             <Route path="selectstages" element={<SelectStages />} />
           </Routes>
         </BrowserRouter>
