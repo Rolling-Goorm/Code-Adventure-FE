@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useQuery } from 'react-query';
-import { fetchProgrammingLanguages } from '../api/api';
+import { Api } from '../api/ApiClient.ts';
 import { useNavigate } from 'react-router-dom';
 import styled, { keyframes } from 'styled-components';
 import Layout from '../components/Layout';
@@ -11,7 +11,23 @@ import { Name, Strong, LanguageButton } from '../styles/styled';
 import AvatarImg from '../assets/avatar.png';
 import sayImg from '../assets/say.png';
 
-function SelectLanguage({ isLoggedIn, setIsLoggedIn }) {
+// Initialize the API client
+const api = new Api();
+
+// API에서 프로그래밍 언어 목록을 가져오는 함수
+const fetchProgrammingLanguages = async () => {
+  console.log('Fetching programming languages...');
+  try {
+    const response = await api.programmingLanguage.programmingLanguageList();
+    console.log('API response:', response);
+    return response.data;
+  } catch (error) {
+    console.error('API error:', error);
+    throw error;
+  }
+};
+
+const SelectLanguage = ({ isLoggedIn, setIsLoggedIn }) => {
   const {
     data: languages,
     isLoading,
@@ -41,7 +57,7 @@ function SelectLanguage({ isLoggedIn, setIsLoggedIn }) {
         {languages.map((language) => (
           <LanguageButton
             key={language.id}
-            onClick={() => handleLanguageSelection(language.name)}
+            onClick={() => handleLanguageSelection(language.id)}
           >
             {language.name.toUpperCase()}
           </LanguageButton>
@@ -60,7 +76,7 @@ function SelectLanguage({ isLoggedIn, setIsLoggedIn }) {
       </Layout.PageContent>
     </Main.Wrapper>
   );
-}
+};
 
 SelectLanguage.propTypes = {
   isLoggedIn: PropTypes.bool.isRequired,
@@ -98,10 +114,10 @@ const SpeechBubble = styled.div`
   margin-left: 10px;
   display: flex;
   align-items: center;
-  width: 300px; /* 말풍선의 너비를 줄임 */
-  height: 60px; /* 말풍선의 높이를 줄임 */
+  width: 300px;
+  height: 60px;
   text-align: center;
-  font-size: 14px; /* 텍스트 크기를 줄임 */
+  font-size: 14px;
   position: relative;
   top: -10px;
 `;
@@ -111,7 +127,7 @@ const TextWrapper = styled.div`
   align-items: center;
   margin: 5px 0px 0px 50px;
   display: flex;
-  flex: 1; /* 남은 공간을 차지하게 설정 */
+  flex: 1;
 `;
 const NextArrow = styled.div`
   cursor: pointer;

@@ -2,7 +2,7 @@ import React from 'react';
 import styled, { keyframes } from 'styled-components';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useQuery } from 'react-query';
-import { fetchCategories } from '../api/api';
+import { Api } from '../api/ApiClient.ts';
 import Layout from '../components/Layout';
 import PropTypes from 'prop-types';
 import Main from '../components/Main';
@@ -12,31 +12,16 @@ import AvatarImg from '../assets/avatar.png';
 import sayImg from '../assets/say.png';
 import Island from '../assets/island.png';
 
-// Mock data to simulate API response
-const mockData = [
-  {
-    id: 1,
-    name: '입출력과 사칙연산',
-    progress: 25.87,
-  },
-  {
-    id: 2,
-    name: '조건문',
-    progress: 0,
-  },
-  {
-    id: 3,
-    name: '반복문',
-    progress: 14.3,
-  },
-  {
-    id: 4,
-    name: '함수',
-    progress: 0,
-  },
-];
+// Initialize the API client
+const api = new Api();
 
-// Styled-components for styling the category boxes
+// API에서 카테고리 데이터를 가져오는 함수
+const fetchCategories = async (languageType) => {
+  const response = await api.programmingLanguage.categoryList(languageType);
+  return response.data;
+};
+
+// 스타일드 컴포넌트 애니메이션 설정
 const bounce2 = keyframes`
   0%, 100% {
     transform: translateY(0);
@@ -233,10 +218,6 @@ function SelectCategory({ isLoggedIn, setIsLoggedIn }) {
   );
 }
 
-SelectCategory.propTypes = {
-  isLoggedIn: PropTypes.bool.isRequired,
-  setIsLoggedIn: PropTypes.func.isRequired,
-};
 SelectCategory.propTypes = {
   isLoggedIn: PropTypes.bool.isRequired,
   setIsLoggedIn: PropTypes.func.isRequired,

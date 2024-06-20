@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import styled, { keyframes } from 'styled-components';
-import { fetchStages } from '../api/api';
 import { useLocation } from 'react-router-dom';
 import { useQuery } from 'react-query';
+import { Api } from '../api/ApiClient.ts';
 import PropTypes from 'prop-types';
 import Main from '../components/Main';
 import Layout from '../components/Layout';
@@ -13,13 +13,19 @@ import unlockImg from '../assets/unlock.png';
 import avatarImg from '../assets/avatar.png';
 import sayImg from '../assets/say.png';
 
-const mockStagesData = [
-  { id: 1, level: 'Easy', attemptResult: '성공' },
-  { id: 2, level: 'Easy', attemptResult: '성공' },
-  { id: 3, level: 'Easy', attemptResult: '실패' },
-  { id: 4, level: 'Easy', attemptResult: '미시도' },
-];
+// Initialize the API client
+const api = new Api();
 
+// API에서 스테이지 데이터를 가져오는 함수
+const fetchStages = async (languageType, categoryId) => {
+  const response = await api.programmingLanguage.stageList(
+    languageType,
+    categoryId,
+  );
+  return response.data;
+};
+
+// 스타일드 컴포넌트 애니메이션 설정
 const bounce2 = keyframes`
   0%, 100% {
     transform: translateY(0);
@@ -128,7 +134,7 @@ function SelectStages({ isLoggedIn, setIsLoggedIn }) {
       );
     } else {
       setLockedMessage('');
-      // Add your stage handling logic here
+      // 스테이지 클릭 시 추가 처리 로직
     }
   };
 
