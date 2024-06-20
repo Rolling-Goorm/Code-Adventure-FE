@@ -74,3 +74,8 @@ export const RowWrapper = styled.div`
   width: 100%;
   margin-bottom: 20px;
 `;
+export const UserInfoItem = styled.div`
+  margin-bottom: 10px;
+  font-size: 16px;
+  color: #333;
+`;
