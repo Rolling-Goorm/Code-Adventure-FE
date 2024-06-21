@@ -53,8 +53,7 @@ const Header = ({ isLoggedIn, setIsLoggedIn }) => {
           </>
         ) : (
           <>
-            <a href="">로그인</a>
-            <a href="">회원가입</a>
+            <a href="/signup">회원가입</a>
           </>
         )}
       </Nav>

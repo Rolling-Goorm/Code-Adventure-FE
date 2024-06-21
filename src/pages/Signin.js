@@ -8,10 +8,12 @@ import {
 } from '../styles/LoginStyle';
 import Layout from '../components/Layout';
 import Main from '../components/Main';
-import { Link, useNavigate } from 'react-router-dom';
+import Header from '../components/Header';
 import { AuthContext } from '../components/AuthContext';
+import { Link, useNavigate } from 'react-router-dom';
 
-const Signin = () => {
+const Signin = (setIsLoggedIn) => {
+  const { user } = useContext(AuthContext);
   const [loginId, setLoginId] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
   const [error, setError] = useState('');
@@ -24,6 +26,7 @@ const Signin = () => {
       setError('Both fields are required');
     } else {
       try {
+        console.log('Sending login request:', { loginId, loginPassword });
         const response = await fetch('http://118.67.128.223:8080/users/login', {
           method: 'POST',
           headers: {
@@ -32,6 +35,7 @@ const Signin = () => {
           body: JSON.stringify({ loginId, loginPassword }),
         });
 
+        console.log('Received response:', response);
         if (!response.ok) {
           throw new Error('Login failed');
         }
@@ -62,6 +66,7 @@ const Signin = () => {
 
   return (
     <Main.Wrapper>
+      <Header isLoggedIn={user} setIsLoggedIn={setIsLoggedIn} />
       <Layout.PageContent>
         <Title>Login</Title>
         {error && <ErrorMessage>{error}</ErrorMessage>}

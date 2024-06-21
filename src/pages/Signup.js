@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import PropTypes from 'prop-types';
 import {
   PageContent,
@@ -14,8 +14,10 @@ import Layout from '../components/Layout';
 import Main from '../components/Main';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
+import Header from '../components/Header';
+import { AuthContext } from '../components/AuthContext';
 
-function Signup() {
+function Signup({ setIsLoggedIn }) {
   const [loginId, setLoginId] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
   const [password2, setPassword2] = useState('');
@@ -26,6 +28,7 @@ function Signup() {
   const [preferredLanguage, setPreferredLanguage] = useState('');
   const [birth, setBirth] = useState('');
 
+  const { user } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const handleSignup = () => {
@@ -68,6 +71,7 @@ function Signup() {
 
   return (
     <Main.Wrapper>
+      <Header isLoggedIn={user} setIsLoggedIn={setIsLoggedIn} />
       <Layout.PageContent>
         <PageContent>
           <Title>회원가입</Title>
@@ -153,7 +157,7 @@ function Signup() {
 }
 
 Signup.propTypes = {
-  setMode: PropTypes.func.isRequired,
+  setIsLoggedIn: PropTypes.func.isRequired,
 };
 
 export default Signup;
