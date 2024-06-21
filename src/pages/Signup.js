@@ -1,203 +1,163 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import PropTypes from 'prop-types';
-import { useNavigate, useLocation } from 'react-router-dom';
-import styled, { keyframes } from 'styled-components';
+import {
+  PageContent,
+  Title,
+  Input,
+  Button,
+  Spacer,
+  InputWrapper,
+  FormWrapper,
+  RowWrapper,
+} from '../styles/LoginStyle';
 import Layout from '../components/Layout';
 import Main from '../components/Main';
+import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import Header from '../components/Header';
-import { Name } from '../styles/styled';
-import heartImg from '../assets/heart.png';
+import { AuthContext } from '../components/AuthContext';
 
-const slideIn = keyframes`
-  from {
-    width: 50px;
-  }
-  to {
-    width: 200px;
-  }
-`;
+function Signup({ setIsLoggedIn }) {
+  const [loginId, setLoginId] = useState('');
+  const [loginPassword, setLoginPassword] = useState('');
+  const [password2, setPassword2] = useState('');
+  const [email, setEmail] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [name, setName] = useState('');
+  const [nickname, setNickname] = useState('');
+  const [preferredLanguage, setPreferredLanguage] = useState('');
+  const [birth, setBirth] = useState('');
 
-const slideOut = keyframes`
-  from {
-    width: 200px;
-  }
-  to {
-    width: 50px;
-  }
-`;
-
-const Container = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-`;
-
-const ContentWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: calc(100% - 40px);
-  height: 90%;
-  max-width: 1200px;
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  overflow: hidden;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  background: rgba(255, 255, 255, 0.9);
-  position: relative;
-  padding-top: 50px; /* 추가: heartsContainer와 겹치지 않도록 패딩 추가 */
-`;
-
-const NavigationBarWrapper = styled.div`
-  position: relative;
-  width: ${({ isOpen }) => (isOpen ? '200px' : '50px')};
-  animation: ${({ isOpen }) => (isOpen ? slideIn : slideOut)} 0.3s forwards;
-  border-right: 1px solid #ccc;
-  background: #f9f9f9;
-  overflow: hidden;
-`;
-
-const NavigationToggle = styled.div`
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  cursor: pointer;
-`;
-
-const NavigationBar = styled.div`
-  margin-top: 30px;
-  display: flex;
-  flex-direction: column;
-  align-items: ${({ isOpen }) => (isOpen ? 'flex-start' : 'center')};
-`;
-
-const NavigationItem = styled.div`
-  cursor: pointer;
-  margin: 10px 0;
-  display: flex;
-  align-items: center;
-`;
-
-const ProblemContainer = styled.div`
-  flex: 2;
-  padding: 20px;
-  border-right: 1px solid #ccc;
-`;
-
-const SolutionContainer = styled.div`
-  flex: 3;
-  padding: 20px;
-`;
-
-const TextArea = styled.textarea`
-  width: 100%;
-  height: 300px;
-  margin-top: 20px; /* 추가: 텍스트 영역을 아래로 내리기 위한 마진 추가 */
-`;
-
-const HeartsContainer = styled.div`
-  position: absolute;
-  top: 10px;
-  right: 20px;
-  display: flex;
-`;
-
-const Heart = styled.img`
-  width: 30px;
-  height: 30px;
-  margin-left: 5px;
-`;
-
-function Solve({ isLoggedIn, setIsLoggedIn }) {
+  const { user } = useContext(AuthContext);
   const navigate = useNavigate();
-  const location = useLocation();
-  const { stageId, cntLife: initialCntLife } = location.state || {};
-  const [code, setCode] = useState('');
-  const [cntLife, setCntLife] = useState(initialCntLife);
-  const [runtime, setRuntime] = useState('4385ms');
-  const [compiledError, setCompiledError] = useState('syntax error');
-  const [isOpen, setIsOpen] = useState(false);
 
-  const handleToggle = () => {
-    setIsOpen(!isOpen);
-  };
-
-  const handleSubmit = async () => {
-    const response = await fetch('/api/submit', {
-      method: 'POST',
-      body: JSON.stringify({ code }),
-      headers: { 'Content-Type': 'application/json' },
-    });
-    const result = await response.json();
-    const { correct } = result;
-
-    if (correct) {
-      navigate('/correctAnswer', { state: { cntLife } });
-    } else {
-      if (cntLife - 1 <= 0) {
-        navigate('/wrongAnswer');
-      } else {
-        setCntLife((prevLife) => prevLife - 1);
-      }
+  const handleSignup = () => {
+    if (loginPassword !== password2) {
+      alert('비밀번호가 일치하지 않습니다.');
+      return;
     }
+
+    const userData = {
+      loginId,
+      loginPassword,
+      name,
+      nickname,
+      preferredLanguage,
+      birth,
+      email,
+      phoneNumber,
+    };
+
+    fetch('http://118.67.128.223:8080/users/new', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(userData),
+    })
+      .then((res) => res.json())
+      .then((json) => {
+        if (json.isSuccess === 'True') {
+          alert('회원가입이 완료되었습니다!');
+          navigate('/Signin');
+        } else {
+          alert('회원가입에 실패했습니다: ' + json.message);
+        }
+      })
+      .catch((error) => {
+        alert('회원가입 중 오류가 발생했습니다: ' + error.message);
+      });
   };
 
   return (
     <Main.Wrapper>
-      <Header isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
+      <Header isLoggedIn={user} setIsLoggedIn={setIsLoggedIn} />
       <Layout.PageContent>
-        <Container>
-          <ContentWrapper>
-            <HeartsContainer>
-              {Array.from({ length: cntLife }).map((_, index) => (
-                <Heart key={index} src={heartImg} alt="heart" />
-              ))}
-            </HeartsContainer>
-            <div style={{ display: 'flex', flex: 1 }}>
-              <NavigationBarWrapper isOpen={isOpen}>
-                <NavigationToggle onClick={handleToggle}>
-                  {isOpen ? '<' : '>'}
-                </NavigationToggle>
-                <NavigationBar isOpen={isOpen}>
-                  {[1, 2, 3].map((item) => (
-                    <NavigationItem key={item} isOpen={isOpen}>
-                      {item}{' '}
-                      {isOpen &&
-                        (item === 1
-                          ? '입출력하기'
-                          : item === 2
-                            ? '덧셈뺄셈'
-                            : '계산기만들기')}
-                    </NavigationItem>
-                  ))}
-                </NavigationBar>
-              </NavigationBarWrapper>
-              <ProblemContainer>
-                <Name>문제를 풀고 제출하세요</Name>
-                <p>문제 설명...</p>
-                <div>
-                  <p>런타임: {runtime}</p>
-                  <p>컴파일 에러: {compiledError}</p>
-                </div>
-              </ProblemContainer>
-              <SolutionContainer>
-                <TextArea
-                  value={code}
-                  onChange={(e) => setCode(e.target.value)}
+        <PageContent>
+          <Title>회원가입</Title>
+          <FormWrapper>
+            <RowWrapper>
+              <InputWrapper>
+                <Input
+                  type="text"
+                  placeholder="아이디"
+                  value={loginId}
+                  onChange={(event) => setLoginId(event.target.value)}
                 />
-                <button onClick={handleSubmit}>제출</button>
-              </SolutionContainer>
-            </div>
-          </ContentWrapper>
-        </Container>
+                <Input
+                  type="password"
+                  placeholder="비밀번호"
+                  value={loginPassword}
+                  onChange={(event) => setLoginPassword(event.target.value)}
+                />
+              </InputWrapper>
+              <InputWrapper>
+                <Input
+                  type="password"
+                  placeholder="비밀번호 확인"
+                  value={password2}
+                  onChange={(event) => setPassword2(event.target.value)}
+                />
+                <Input
+                  type="text"
+                  placeholder="이메일"
+                  value={email}
+                  onChange={(event) => setEmail(event.target.value)}
+                />
+              </InputWrapper>
+            </RowWrapper>
+            <RowWrapper>
+              <InputWrapper>
+                <Input
+                  type="text"
+                  placeholder="전화번호"
+                  value={phoneNumber}
+                  onChange={(event) => setPhoneNumber(event.target.value)}
+                />
+                <Input
+                  type="text"
+                  placeholder="이름"
+                  value={name}
+                  onChange={(event) => setName(event.target.value)}
+                />
+              </InputWrapper>
+              <InputWrapper>
+                <Input
+                  type="text"
+                  placeholder="닉네임"
+                  value={nickname}
+                  onChange={(event) => setNickname(event.target.value)}
+                />
+                <Input
+                  type="text"
+                  placeholder="선호 언어"
+                  value={preferredLanguage}
+                  onChange={(event) => setPreferredLanguage(event.target.value)}
+                />
+              </InputWrapper>
+            </RowWrapper>
+            <InputWrapper>
+              <Input
+                type="date"
+                placeholder="생일"
+                value={birth}
+                onChange={(event) => setBirth(event.target.value)}
+              />
+            </InputWrapper>
+            <Button onClick={handleSignup}>회원가입</Button>
+            <Spacer />
+            <Link to="/Signin">
+              <Button>Login</Button>
+            </Link>
+          </FormWrapper>
+        </PageContent>
       </Layout.PageContent>
     </Main.Wrapper>
   );
 }
 
-Solve.propTypes = {
-  isLoggedIn: PropTypes.bool.isRequired,
+Signup.propTypes = {
   setIsLoggedIn: PropTypes.func.isRequired,
 };
 
-export default Solve;
+export default Signup;
