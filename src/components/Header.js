@@ -59,6 +59,7 @@ const Header = () => {
       <Nav>
         {user ? (
           <>
+            <a href="/selectlanguage">언어선택</a>
             <a href="/selectcategory">카테고리</a>
             <a href="/selectstages">스테이지</a>
             <a href="/mypages">마이 페이지</a>

@@ -1,4 +1,3 @@
-// src/pages/SelectLanguage.js
 import React, { useState, useContext, useEffect } from 'react';
 import { AuthContext } from '../components/AuthContext';
 import { useNavigate } from 'react-router-dom';
@@ -10,19 +9,17 @@ import Header from '../components/Header';
 import { Name, Strong, LanguageButton } from '../styles/styled';
 import AvatarImg from '../assets/avatar.png';
 import sayImg from '../assets/say.png';
-
-const mockLanguages = [
-  { id: 1, name: 'JAVA' },
-  { id: 2, name: 'JAVASCRIPT' },
-];
+import useFetch from '../hooks/useFetch'; // useFetch 훅을 import
 
 const SelectLanguage = ({ setIsLoggedIn }) => {
   const { user } = useContext(AuthContext); // AuthContext 사용
   const [speechBubbleText, setSpeechBubbleText] = useState('');
-  const [languages] = useState(mockLanguages); // 목 데이터를 사용
-  const [loading] = useState(false);
-  const [error] = useState(null);
-  const [selectedLanguage, setSelectedLanguage] = useState(null);
+  const [selectedLanguage, setSelectedLanguage] = useState(null); // 선택된 언어 상태 추가
+  const {
+    data: languages,
+    loading,
+    error,
+  } = useFetch('http://118.67.128.223:8080/programmingLanguage'); // useFetch 훅 사용
 
   useEffect(() => {
     if (user) {
@@ -36,18 +33,19 @@ const SelectLanguage = ({ setIsLoggedIn }) => {
   const navigate = useNavigate();
 
   const handleLanguageSelection = (language) => {
-    setSelectedLanguage(language);
+    setSelectedLanguage(language); // 선택된 언어 상태 설정
     setSpeechBubbleText(`${language.name.toUpperCase()}로 모험 시작하기!!`);
   };
 
-  const handleLanguageMove = () => {
-    console.log(`selectLanguage / Type selected: ${selectedLanguage.name}`); // 콘솔 로그 추가
-    navigate('/selectCategory', {
-      state: {
-        languageType: selectedLanguage.name,
-        programmingLanguageId: selectedLanguage.id,
-      },
-    }); // selectStage 페이지로 이동하면서 languageType 상태 전달
+  const handleNextClick = () => {
+    if (selectedLanguage) {
+      navigate('/selectCategory', {
+        state: {
+          languageType: selectedLanguage.name,
+          programmingLanguageId: selectedLanguage.id,
+        },
+      }); // selectStage 페이지로 이동하면서 languageType 상태 전달
+    }
   };
 
   if (loading) return <div>Loading...</div>;
@@ -55,7 +53,7 @@ const SelectLanguage = ({ setIsLoggedIn }) => {
 
   return (
     <Main.Wrapper>
-      <Header isLoggedIn={user} setIsLoggedIn={setIsLoggedIn} />
+      <Header isLoggedIn={!!user} setIsLoggedIn={setIsLoggedIn} />
       <Layout.PageContent>
         <Name>
           사용할 <Strong>언어</Strong>를 선택해주세요
@@ -75,7 +73,7 @@ const SelectLanguage = ({ setIsLoggedIn }) => {
               <TextWrapper>
                 {speechBubbleText}
                 {selectedLanguage && (
-                  <NextArrow onClick={handleLanguageMove}>→</NextArrow>
+                  <NextArrow onClick={handleNextClick}>→</NextArrow>
                 )}
               </TextWrapper>
             </SpeechBubble>
