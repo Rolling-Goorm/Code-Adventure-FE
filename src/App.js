@@ -1,4 +1,3 @@
-import './App.css';
 import React, { useState } from 'react';
 import { ThemeProvider } from 'styled-components';
 import { AuthProvider } from './components/AuthContext';
@@ -17,7 +16,6 @@ import Signin from './pages/Signin';
 import Signup from './pages/Signup';
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   return (
     <AuthProvider>
       <ThemeProvider theme={theme}>
@@ -28,41 +26,12 @@ function App() {
             <Route path="/signin" element={<Signin />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/mypages" element={<Mypages />} />
-            <Route
-              path="/selectLanguage"
-              element={
-                <SelectLanguage
-                  isLoggedIn={isLoggedIn}
-                  setIsLoggedIn={setIsLoggedIn}
-                />
-              }
-            />
-            <Route path="selectcategory" element={<SelectCategory />} />
-            <Route
-              path="/solve"
-              element={
-                <Solve isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
-              }
-            />
-            <Route
-              path="/correctAnswer"
-              element={
-                <CorrectAnswer
-                  isLoggedIn={isLoggedIn}
-                  setIsLoggedIn={setIsLoggedIn}
-                />
-              }
-            />
-            <Route
-              path="/wrongAnswer"
-              element={
-                <WrongAnswer
-                  isLoggedIn={isLoggedIn}
-                  setIsLoggedIn={setIsLoggedIn}
-                />
-              }
-            />
-            <Route path="selectstages" element={<SelectStages />} />
+            <Route path="/selectLanguage" element={<SelectLanguage />} />
+            <Route path="/selectcategory" element={<SelectCategory />} />
+            <Route path="/solve" element={<Solve />} />
+            <Route path="/correctAnswer" element={<CorrectAnswer />} />
+            <Route path="/wrongAnswer" element={<WrongAnswer />} />
+            <Route path="/selectstages" element={<SelectStages />} />
           </Routes>
         </BrowserRouter>
       </ThemeProvider>

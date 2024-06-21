@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom'; // useNavigate import
+import { AuthContext } from './AuthContext';
 import Title from '../assets/title.png'; // 업로드된 파일 경로
 
 // Styled components
@@ -35,26 +37,35 @@ const Nav = styled.nav`
 `;
 
 // Header component
-const Header = ({ isLoggedIn, setIsLoggedIn }) => {
+const Header = () => {
+  const { user, logout } = useContext(AuthContext);
+  const navigate = useNavigate(); // useNavigate hook 사용
+
+  const handleLogout = () => {
+    logout(); // AuthContext의 logout 함수 호출
+    localStorage.clear(); // 로컬 스토리지 비우기
+    navigate('/'); // 홈으로 이동
+  };
+
   return (
     <HeaderContainer>
       <LogoContainer>
         <Logo src={Title} alt="Logo" />
       </LogoContainer>
       <Nav>
-        {isLoggedIn ? (
+        {user ? (
           <>
-            <a href="/">홈</a>
-            <a href="">마이 페이지</a>
-            <a href="">상점</a>
-            <a href="/" onClick={() => setIsLoggedIn(false)}>
+            <a href="/selectcategory">카테고리</a>
+            <a href="/selectstages">스테이지</a>
+            <a href="/mypages">마이 페이지</a>
+            <a href="/shop">상점</a>
+            <a href="/" onClick={handleLogout}>
               로그아웃
             </a>
           </>
         ) : (
           <>
-            <a href="">로그인</a>
-            <a href="">회원가입</a>
+            <a href="/signup">회원가입</a>
           </>
         )}
       </Nav>

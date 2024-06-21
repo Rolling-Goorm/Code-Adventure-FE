@@ -12,14 +12,8 @@ import AvatarImg from '../assets/avatar.png';
 import sayImg from '../assets/say.png';
 
 const mockLanguages = [
-  {
-    id: 1,
-    name: 'JAVA',
-  },
-  {
-    id: 2,
-    name: 'JAVASCRIPT',
-  },
+  { id: 1, name: 'JAVA' },
+  { id: 2, name: 'JAVASCRIPT' },
 ];
 
 const SelectLanguage = ({ setIsLoggedIn }) => {

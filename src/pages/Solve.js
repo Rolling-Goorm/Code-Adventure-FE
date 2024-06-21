@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useNavigate, useLocation } from 'react-router-dom';
 import styled, { keyframes } from 'styled-components';
+import { Title } from '../styles/LoginStyle';
 import Layout from '../components/Layout';
 import Main from '../components/Main';
 import Header from '../components/Header';
-import { Name } from '../styles/styled';
 import heartImg from '../assets/heart.png';
 
 const slideIn = keyframes`
@@ -35,29 +35,37 @@ const Container = styled.div`
 
 const ContentWrapper = styled.div`
   display: flex;
+  flex-direction: column;
   width: calc(100% - 40px);
-  max-width: 1200px;
+  height: 80%;
+  max-width: 2000px;
   border: 1px solid #ccc;
   border-radius: 10px;
   overflow: hidden;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.8);
+  position: relative;
+  padding-top: 50px; /* 추가: heartsContainer와 겹치지 않도록 패딩 추가 */
 `;
 
 const NavigationBarWrapper = styled.div`
   position: relative;
-  width: ${({ isOpen }) => (isOpen ? '200px' : '50px')};
+  min-width: ${({ isOpen }) =>
+    isOpen ? '200px' : '50px'}; /* 최소 너비 조정 */
+  width: ${({ isOpen }) => (isOpen ? '200px' : '50px')}; /* 최소 너비 조정 */
   animation: ${({ isOpen }) => (isOpen ? slideIn : slideOut)} 0.3s forwards;
   border-right: 1px solid #ccc;
   background: #f9f9f9;
   overflow: hidden;
+  transition: width 0.3s ease; /* 애니메이션 추가 */
 `;
 
 const NavigationToggle = styled.div`
   position: absolute;
   top: 10px;
-  left: 10px;
+  left: ${({ isOpen }) => (isOpen ? '170px' : '10px')};
   cursor: pointer;
+  transition: left 0.3s ease; /* 애니메이션 추가 */
 `;
 
 const NavigationBar = styled.div`
@@ -76,18 +84,21 @@ const NavigationItem = styled.div`
 
 const ProblemContainer = styled.div`
   flex: 2;
+  min-width: 400px; /* 최소 너비 조정 */
   padding: 20px;
   border-right: 1px solid #ccc;
 `;
 
 const SolutionContainer = styled.div`
   flex: 3;
+  min-width: 400px; /* 최소 너비 조정 */
   padding: 20px;
 `;
 
 const TextArea = styled.textarea`
-  width: 100%;
+  width: 90%;
   height: 300px;
+  margin-top: 20px; /* 추가: 텍스트 영역을 아래로 내리기 위한 마진 추가 */
 `;
 
 const HeartsContainer = styled.div`
@@ -140,43 +151,45 @@ function Solve({ isLoggedIn, setIsLoggedIn }) {
   return (
     <Main.Wrapper>
       <Header isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
-      <HeartsContainer>
-        {Array.from({ length: cntLife }).map((_, index) => (
-          <Heart key={index} src={heartImg} alt="heart" />
-        ))}
-      </HeartsContainer>
       <Layout.PageContent>
         <Container>
           <ContentWrapper>
-            <NavigationBarWrapper isOpen={isOpen}>
-              <NavigationToggle onClick={handleToggle}>
-                {isOpen ? '<' : '...'}
-              </NavigationToggle>
-              <NavigationBar isOpen={isOpen}>
-                {[1, 2, 3].map((item) => (
-                  <NavigationItem key={item} isOpen={isOpen}>
-                    {item}{' '}
-                    {isOpen &&
-                      (item === 1
-                        ? '입출력하기'
-                        : item === 2
-                          ? '덧셈뺄셈'
-                          : '계산기만들기')}
-                  </NavigationItem>
-                ))}
-              </NavigationBar>
-            </NavigationBarWrapper>
-            <ProblemContainer>
-              <Name>문제를 풀고 제출하세요</Name>
-              <p>문제 설명...</p>
-            </ProblemContainer>
-            <SolutionContainer>
-              <TextArea
-                value={code}
-                onChange={(e) => setCode(e.target.value)}
-              />
-              <button onClick={handleSubmit}>제출</button>
-            </SolutionContainer>
+            <HeartsContainer>
+              {Array.from({ length: cntLife }).map((_, index) => (
+                <Heart key={index} src={heartImg} alt="heart" />
+              ))}
+            </HeartsContainer>
+            <div style={{ display: 'flex', flex: 1 }}>
+              <NavigationBarWrapper isOpen={isOpen}>
+                <NavigationToggle isOpen={isOpen} onClick={handleToggle}>
+                  {isOpen ? '<' : '>'}
+                </NavigationToggle>
+                <NavigationBar isOpen={isOpen}>
+                  {[1, 2, 3].map((item) => (
+                    <NavigationItem key={item} isOpen={isOpen}>
+                      {item}{' '}
+                      {isOpen &&
+                        (item === 1
+                          ? '입출력하기'
+                          : item === 2
+                            ? '덧셈뺄셈'
+                            : '계산기만들기')}
+                    </NavigationItem>
+                  ))}
+                </NavigationBar>
+              </NavigationBarWrapper>
+              <ProblemContainer>
+                <Title>사칙연산</Title>
+                <p>문제 설명...</p>
+              </ProblemContainer>
+              <SolutionContainer>
+                <TextArea
+                  value={code}
+                  onChange={(e) => setCode(e.target.value)}
+                />
+                <button onClick={handleSubmit}>제출</button>
+              </SolutionContainer>
+            </div>
           </ContentWrapper>
         </Container>
       </Layout.PageContent>
