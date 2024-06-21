@@ -63,7 +63,7 @@ const Header = () => {
             <a href="/selectcategory">카테고리</a>
             <a href="/selectstages">스테이지</a>
             <a href="/mypages">마이 페이지</a>
-            <a href="/shop">상점</a>
+            <a href="/ItemList">상점</a>
             <a href="/" onClick={handleLogout}>
               로그아웃
             </a>
