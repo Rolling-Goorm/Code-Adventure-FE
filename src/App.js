@@ -15,6 +15,8 @@ import Start from './pages/Start';
 import Mypages from './pages/Mypages';
 import Signin from './pages/Signin';
 import Signup from './pages/Signup';
+import ItemList from './pages/ItemList';
+import ItemDetail from './pages/ItemDetail';
 
 function App() {
   const [cntLife, setCntLife] = useState(5); // 초기 목숨 5개
@@ -45,6 +47,7 @@ function App() {
               element={<WrongAnswer cntLife={cntLife} />}
             />
             <Route path="/selectstages" element={<SelectStages />} />
+            <Route path="/ItemList" element={<ItemList />} />
           </Routes>
         </BrowserRouter>
       </ThemeProvider>
