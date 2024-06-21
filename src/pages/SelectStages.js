@@ -1,5 +1,4 @@
-// src/pages/SelectStages.js
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import styled, { keyframes } from 'styled-components';
 import { AuthContext } from '../components/AuthContext';
 import { useLocation } from 'react-router-dom';
@@ -50,7 +49,7 @@ const StageBox = styled.div`
   }
   border: 1px solid #ccc;
   border-radius: 10px;
-  background: #fff;
+  background: rgba(255, 255, 255, 0.8); // 투명도 낮춘 설정
 `;
 
 const StageLevel = styled.div`
@@ -107,30 +106,36 @@ const TextWrapper = styled.div`
 function SelectStages({ setIsLoggedIn }) {
   const { user } = useContext(AuthContext);
   const location = useLocation();
-  const { languageType, categoryId } = location.state || {};
-  const programmingLanguageId = languageType === 'JAVA' ? 1 : 2; // 프로그래밍 언어 ID 설정
-  const {
-    data: stages,
-    loading,
-    error,
-  } = useFetch(
-    `http://118.67.128.223:8080/programmingLanguage/${programmingLanguageId}/categories/${categoryId}/stages`,
+  const { programmingLanguageId, categoryId } = location.state || {}; // 프로그래밍 언어 ID를 이전 페이지에서 받아옴
+  console.log('Received Programming Language ID:', programmingLanguageId); // 디버깅 메시지 추가
+  console.log('Received Category ID:', categoryId); // 디버깅 메시지 추가
+
+  const { data: stages } = useFetch(
+    programmingLanguageId && categoryId
+      ? `http://118.67.128.223:8080/programmingLanguage/${programmingLanguageId}/categories/${categoryId}/stages`
+      : null,
   );
-  const [lockedMessage, setLockedMessage] = useState('');
+  const [alertMessage, setAlertMessage] =
+    useState('단계별로 문제를 풀이해줘!!');
+
+  useEffect(() => {
+    if (!programmingLanguageId || !categoryId) {
+      setAlertMessage('언어와 카테고리를 먼저 선택해주세요 !!');
+    }
+  }, [programmingLanguageId, categoryId]);
 
   const handleStageClick = (stageId, attemptResult) => {
     if (attemptResult === '미시도') {
-      setLockedMessage(
+      setAlertMessage(
         `현재 풀이해야할 단계는 ${stageId - 1}입니다. 이 단계를 성공하셔야 합니다!`,
       );
+    } else if (attemptResult === '도전 가능') {
+      setAlertMessage('잠금 해제된 문제부터 풀이해주세요');
     } else {
-      setLockedMessage('');
+      setAlertMessage('잠금 해제된 문제부터 풀이해주세요');
       // 스테이지 클릭 시 추가 처리 로직
     }
   };
-
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error loading data</div>;
 
   return (
     <Main.Wrapper>
@@ -140,46 +145,47 @@ function SelectStages({ setIsLoggedIn }) {
           문제를 <Strong>단계</Strong>별로 풀이해주세요
         </Name>
         <StageWrapper>
-          {stages.map((stage, index) => (
-            <StageBox
-              key={stage.id}
-              delay={index * 0.2}
-              onClick={() => handleStageClick(stage.id, stage.attemptResult)}
-            >
-              <StageLevel>{stage.level}</StageLevel>
-              <img
-                src={
-                  stage.attemptResult === '성공' ||
-                  stage.attemptResult === '실패'
-                    ? unlockImg
-                    : lockImg
-                }
-                alt={
-                  stage.attemptResult === '성공' ||
-                  stage.attemptResult === '실패'
-                    ? 'Unlocked'
-                    : 'Locked'
-                }
-                width="70"
-                height="80"
-              />
-              <AttemptResult
-                success={stage.attemptResult === '성공'}
-                failed={stage.attemptResult === '실패'}
+          {stages &&
+            stages.map((stage, index) => (
+              <StageBox
+                key={stage.id}
+                delay={index * 0.2}
+                onClick={() => handleStageClick(stage.id, stage.attemptResult)}
               >
-                {stage.attemptResult}
-              </AttemptResult>
-            </StageBox>
-          ))}
+                <StageLevel>{stage.level}</StageLevel>
+                <img
+                  src={
+                    stage.attemptResult === '성공' ||
+                    stage.attemptResult === '실패' ||
+                    stage.attemptResult === '도전 가능'
+                      ? unlockImg
+                      : lockImg
+                  }
+                  alt={
+                    stage.attemptResult === '성공' ||
+                    stage.attemptResult === '실패' ||
+                    stage.attemptResult === '도전 가능'
+                      ? 'Unlocked'
+                      : 'Locked'
+                  }
+                  width="70"
+                  height="80"
+                />
+                <AttemptResult
+                  success={stage.attemptResult === '성공'}
+                  failed={stage.attemptResult === '실패'}
+                >
+                  {stage.attemptResult}
+                </AttemptResult>
+              </StageBox>
+            ))}
         </StageWrapper>
-        {lockedMessage && (
-          <SpeechBubbleWrapper>
-            <Avatar src={avatarImg} alt="avatarImg" />
-            <SpeechBubble>
-              <TextWrapper>{lockedMessage}</TextWrapper>
-            </SpeechBubble>
-          </SpeechBubbleWrapper>
-        )}
+        <SpeechBubbleWrapper>
+          <Avatar src={avatarImg} alt="avatarImg" />
+          <SpeechBubble>
+            <TextWrapper>{alertMessage}</TextWrapper>
+          </SpeechBubble>
+        </SpeechBubbleWrapper>
       </Layout.PageContent>
     </Main.Wrapper>
   );
