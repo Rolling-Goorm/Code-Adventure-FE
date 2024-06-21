@@ -11,7 +11,7 @@ import Main from '../components/Main';
 import Header from '../components/Header';
 import { AuthContext } from '../components/AuthContext';
 import { Link, useNavigate } from 'react-router-dom';
-
+import { Name } from '../styles/styled';
 const Signin = (setIsLoggedIn) => {
   const { user, login } = useContext(AuthContext); // AuthContext 사용
   const [loginId, setLoginId] = useState('');
@@ -70,7 +70,7 @@ const Signin = (setIsLoggedIn) => {
     <Main.Wrapper>
       <Header isLoggedIn={user} setIsLoggedIn={setIsLoggedIn} />
       <Layout.PageContent>
-        <Title>Login</Title>
+        <Name>Login</Name>
         {error && <ErrorMessage>{error}</ErrorMessage>}
         <form onSubmit={handleLogin}>
           <Input
@@ -85,6 +85,7 @@ const Signin = (setIsLoggedIn) => {
             value={loginPassword}
             onChange={(e) => setLoginPassword(e.target.value)}
           />
+          <Spacer />
           <Button type="submit">Login</Button>
         </form>
         <Spacer />

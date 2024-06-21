@@ -2,13 +2,10 @@ import React, { useState, useContext } from 'react';
 import PropTypes from 'prop-types';
 import {
   PageContent,
-  Title,
   Input,
   Button,
   Spacer,
-  InputWrapper,
   FormWrapper,
-  RowWrapper,
 } from '../styles/LoginStyle';
 import Layout from '../components/Layout';
 import Main from '../components/Main';
@@ -16,7 +13,7 @@ import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import Header from '../components/Header';
 import { AuthContext } from '../components/AuthContext';
-
+import { Name } from '../styles/styled';
 function Signup({ setIsLoggedIn }) {
   const [loginId, setLoginId] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
@@ -73,77 +70,63 @@ function Signup({ setIsLoggedIn }) {
     <Main.Wrapper>
       <Header isLoggedIn={user} setIsLoggedIn={setIsLoggedIn} />
       <Layout.PageContent>
+        <Name>회원가입</Name>
         <PageContent>
-          <Title>회원가입</Title>
           <FormWrapper>
-            <RowWrapper>
-              <InputWrapper>
-                <Input
-                  type="text"
-                  placeholder="아이디"
-                  value={loginId}
-                  onChange={(event) => setLoginId(event.target.value)}
-                />
-                <Input
-                  type="password"
-                  placeholder="비밀번호"
-                  value={loginPassword}
-                  onChange={(event) => setLoginPassword(event.target.value)}
-                />
-              </InputWrapper>
-              <InputWrapper>
-                <Input
-                  type="password"
-                  placeholder="비밀번호 확인"
-                  value={password2}
-                  onChange={(event) => setPassword2(event.target.value)}
-                />
-                <Input
-                  type="text"
-                  placeholder="이메일"
-                  value={email}
-                  onChange={(event) => setEmail(event.target.value)}
-                />
-              </InputWrapper>
-            </RowWrapper>
-            <RowWrapper>
-              <InputWrapper>
-                <Input
-                  type="text"
-                  placeholder="전화번호"
-                  value={phoneNumber}
-                  onChange={(event) => setPhoneNumber(event.target.value)}
-                />
-                <Input
-                  type="text"
-                  placeholder="이름"
-                  value={name}
-                  onChange={(event) => setName(event.target.value)}
-                />
-              </InputWrapper>
-              <InputWrapper>
-                <Input
-                  type="text"
-                  placeholder="닉네임"
-                  value={nickname}
-                  onChange={(event) => setNickname(event.target.value)}
-                />
-                <Input
-                  type="text"
-                  placeholder="선호 언어"
-                  value={preferredLanguage}
-                  onChange={(event) => setPreferredLanguage(event.target.value)}
-                />
-              </InputWrapper>
-            </RowWrapper>
-            <InputWrapper>
-              <Input
-                type="date"
-                placeholder="생일"
-                value={birth}
-                onChange={(event) => setBirth(event.target.value)}
-              />
-            </InputWrapper>
+            <Input
+              type="text"
+              placeholder="아이디"
+              value={loginId}
+              onChange={(event) => setLoginId(event.target.value)}
+            />
+            <Input
+              type="password"
+              placeholder="비밀번호"
+              value={loginPassword}
+              onChange={(event) => setLoginPassword(event.target.value)}
+            />
+            <Input
+              type="password"
+              placeholder="비밀번호 확인"
+              value={password2}
+              onChange={(event) => setPassword2(event.target.value)}
+            />
+            <Input
+              type="text"
+              placeholder="이메일"
+              value={email}
+              onChange={(event) => setEmail(event.target.value)}
+            />
+            <Input
+              type="text"
+              placeholder="전화번호"
+              value={phoneNumber}
+              onChange={(event) => setPhoneNumber(event.target.value)}
+            />
+            <Input
+              type="text"
+              placeholder="이름"
+              value={name}
+              onChange={(event) => setName(event.target.value)}
+            />
+            <Input
+              type="text"
+              placeholder="닉네임"
+              value={nickname}
+              onChange={(event) => setNickname(event.target.value)}
+            />
+            <Input
+              type="text"
+              placeholder="선호 언어"
+              value={preferredLanguage}
+              onChange={(event) => setPreferredLanguage(event.target.value)}
+            />
+            <Input
+              type="date"
+              placeholder="생일"
+              value={birth}
+              onChange={(event) => setBirth(event.target.value)}
+            />
             <Button onClick={handleSignup}>회원가입</Button>
             <Spacer />
             <Link to="/Signin">
