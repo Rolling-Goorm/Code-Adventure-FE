@@ -1,4 +1,3 @@
-import './App.css';
 import React, { useState } from 'react';
 import { ThemeProvider } from 'styled-components';
 import { AuthProvider } from './components/AuthContext';
@@ -17,8 +16,8 @@ import Signin from './pages/Signin';
 import Signup from './pages/Signup';
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [cntLife, setCntLife] = useState(5); // 초기 목숨 5개
+
   return (
     <AuthProvider>
       <ThemeProvider theme={theme}>
@@ -29,48 +28,21 @@ function App() {
             <Route path="/signin" element={<Signin />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/mypages" element={<Mypages />} />
-            <Route
-              path="/selectLanguage"
-              element={
-                <SelectLanguage
-                  isLoggedIn={isLoggedIn}
-                  setIsLoggedIn={setIsLoggedIn}
-                />
-              }
-            />
-            <Route path="selectcategory" element={<SelectCategory />} />
+            <Route path="/selectLanguage" element={<SelectLanguage />} />
+            <Route path="/selectcategory" element={<SelectCategory />} />
             <Route
               path="/solve"
-              element={
-                <Solve
-                  isLoggedIn={isLoggedIn}
-                  setIsLoggedIn={setIsLoggedIn}
-                  cntLife={cntLife}
-                  setCntLife={setCntLife}
-                />
-              }
+              element={<Solve cntLife={cntLife} setCntLife={setCntLife} />}
             />
             <Route
               path="/correctAnswer"
-              element={
-                <CorrectAnswer
-                  isLoggedIn={isLoggedIn}
-                  setIsLoggedIn={setIsLoggedIn}
-                  cntLife={cntLife}
-                />
-              }
+              element={<CorrectAnswer cntLife={cntLife} />}
             />
             <Route
               path="/wrongAnswer"
-              element={
-                <WrongAnswer
-                  isLoggedIn={isLoggedIn}
-                  setIsLoggedIn={setIsLoggedIn}
-                  cntLife={cntLife}
-                />
-              }
+              element={<WrongAnswer cntLife={cntLife} />}
             />
-            <Route path="selectstages" element={<SelectStages />} />
+            <Route path="/selectstages" element={<SelectStages />} />
           </Routes>
         </BrowserRouter>
       </ThemeProvider>

@@ -13,11 +13,10 @@ import { AuthContext } from '../components/AuthContext';
 import { Link, useNavigate } from 'react-router-dom';
 
 const Signin = (setIsLoggedIn) => {
-  const { user } = useContext(AuthContext);
+  const { user, login } = useContext(AuthContext); // AuthContext 사용
   const [loginId, setLoginId] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
   const [error, setError] = useState('');
-  const { login } = useContext(AuthContext); // AuthContext 사용
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
@@ -49,10 +48,13 @@ const Signin = (setIsLoggedIn) => {
           console.log('Parsed JSON:', jsonData);
           // JSON 데이터에 따라 후속 처리
           login(jsonData); // 로그인 정보를 AuthContext에 저장
+          localStorage.setItem('user', JSON.stringify(jsonData)); // 로컬 스토리지에 저장
         } catch (parseError) {
           console.log('Response is not JSON. Using plain text data.');
           // 로그인 정보를 적절히 설정 (여기서는 응답이 JSON이 아니므로 예시로 간단히 처리)
-          login({ loginId });
+          const userData = { loginId };
+          login(userData);
+          localStorage.setItem('user', JSON.stringify(userData)); // 로컬 스토리지에 저장
         }
 
         setError('');

@@ -1,6 +1,7 @@
 // src/pages/SelectStages.js
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import styled, { keyframes } from 'styled-components';
+import { AuthContext } from '../components/AuthContext';
 import { useLocation } from 'react-router-dom';
 import useFetch from '../hooks/useFetch'; // useFetch 훅을 import
 import PropTypes from 'prop-types';
@@ -103,7 +104,8 @@ const TextWrapper = styled.div`
   flex: 1;
 `;
 
-function SelectStages({ isLoggedIn, setIsLoggedIn }) {
+function SelectStages({ setIsLoggedIn }) {
+  const { user } = useContext(AuthContext);
   const location = useLocation();
   const { languageType, categoryId } = location.state || {};
   const programmingLanguageId = languageType === 'JAVA' ? 1 : 2; // 프로그래밍 언어 ID 설정
@@ -132,7 +134,7 @@ function SelectStages({ isLoggedIn, setIsLoggedIn }) {
 
   return (
     <Main.Wrapper>
-      <Header isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
+      <Header isLoggedIn={user} setIsLoggedIn={setIsLoggedIn} />
       <Layout.PageContent>
         <Name>
           문제를 <Strong>단계</Strong>별로 풀이해주세요
