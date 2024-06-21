@@ -1,7 +1,7 @@
 // src/pages/SelectStages.js
 import React, { useState } from 'react';
 import styled, { keyframes } from 'styled-components';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import useFetch from '../hooks/useFetch'; // useFetch 훅을 import
 import PropTypes from 'prop-types';
 import Main from '../components/Main';
@@ -105,6 +105,7 @@ const TextWrapper = styled.div`
 
 function SelectStages({ isLoggedIn, setIsLoggedIn }) {
   const location = useLocation();
+  const navigate = useNavigate();
   const { languageType, categoryId } = location.state || {};
   const programmingLanguageId = languageType === 'JAVA' ? 1 : 2; // 프로그래밍 언어 ID 설정
   const {
@@ -124,6 +125,7 @@ function SelectStages({ isLoggedIn, setIsLoggedIn }) {
     } else {
       setLockedMessage('');
       // 스테이지 클릭 시 추가 처리 로직
+      navigate('/solve', { state: { stageId, cntLife: 5 } });
     }
   };
 

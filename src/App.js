@@ -18,7 +18,6 @@ import Signup from './pages/Signup';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [cntLife, setCntLife] = useState(5); // 초기 목숨 5개
   return (
     <AuthProvider>
       <ThemeProvider theme={theme}>
@@ -42,12 +41,7 @@ function App() {
             <Route
               path="/solve"
               element={
-                <Solve
-                  isLoggedIn={isLoggedIn}
-                  setIsLoggedIn={setIsLoggedIn}
-                  cntLife={cntLife}
-                  setCntLife={setCntLife}
-                />
+                <Solve isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
               }
             />
             <Route
@@ -56,7 +50,6 @@ function App() {
                 <CorrectAnswer
                   isLoggedIn={isLoggedIn}
                   setIsLoggedIn={setIsLoggedIn}
-                  cntLife={cntLife}
                 />
               }
             />
@@ -66,7 +59,6 @@ function App() {
                 <WrongAnswer
                   isLoggedIn={isLoggedIn}
                   setIsLoggedIn={setIsLoggedIn}
-                  cntLife={cntLife}
                 />
               }
             />
