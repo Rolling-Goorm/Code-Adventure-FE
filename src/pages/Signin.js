@@ -58,7 +58,7 @@ const Signin = (setIsLoggedIn) => {
         }
 
         setError('');
-        navigate('/selectLanguage'); // 로그인 성공 시 페이지 이동
+        navigate('/'); // 로그인 성공 시 페이지 이동
       } catch (error) {
         console.error('Error:', error);
         setError('Login failed');

@@ -6,6 +6,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import SelectLanguage from './pages/SelectLanguage';
 import SelectCategory from './pages/SelectCategory';
 import SelectStages from './pages/SelectStages';
+import GameInfo from './pages/GameInfo';
 import Solve from './pages/Solve';
 import CorrectAnswer from './pages/CorrectAnswer';
 import WrongAnswer from './pages/WrongAnswer';
@@ -23,6 +24,7 @@ function App() {
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Start />} />
+            <Route path="/gameinfo" element={<GameInfo />} />
             <Route path="/signin" element={<Signin />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/mypages" element={<Mypages />} />

@@ -80,6 +80,7 @@ const NavigationItem = styled.div`
   margin: 10px 0;
   display: flex;
   align-items: center;
+  padding-left: ${({ isOpen }) => (isOpen ? '20px' : '0')}; /* 왼쪽 여백 추가 */
 `;
 
 const ProblemContainer = styled.div`
@@ -120,31 +121,68 @@ function Solve({ isLoggedIn, setIsLoggedIn }) {
   const { stageId, cntLife: initialCntLife } = location.state || {};
   const [code, setCode] = useState('');
   const [cntLife, setCntLife] = useState(initialCntLife);
-  const [runtime, setRuntime] = useState('4385ms');
-  const [compiledError, setCompiledError] = useState('syntax error');
+  const [runtime, setRuntime] = useState('');
+  const [compiledError, setCompiledError] = useState('');
+  const [rewardCoin, setRewardCoin] = useState(0);
+  const [message, setMessage] = useState('');
   const [isOpen, setIsOpen] = useState(false);
+
+  const correctCode = `
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        // 사용자로부터 이름과 나이를 입력받음
+        System.out.print("이름을 입력하세요: ");
+        String name = scanner.nextLine();
+
+        System.out.print("나이를 입력하세요: ");
+        int age = scanner.nextInt();
+
+        // 입력받은 이름과 나이를 이용해 출력
+        System.out.println("제 이름은 " + name + "이고, 나이는 " + age + "살 입니다.");
+        
+        scanner.close();
+    }
+}`;
 
   const handleToggle = () => {
     setIsOpen(!isOpen);
   };
 
   const handleSubmit = async () => {
-    const response = await fetch('/api/submit', {
-      method: 'POST',
-      body: JSON.stringify({ code }),
-      headers: { 'Content-Type': 'application/json' },
-    });
-    const result = await response.json();
-    const { correct } = result;
+    try {
+      console.log('Submitting code:', code); // 디버그: 제출한 코드 출력
+      const response = await fetch('http://118.67.128.223:8080/submit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ code }),
+      });
+      const data = await response.json();
+      console.log('Received response:', data); // 디버그: 서버 응답 출력
 
-    if (correct) {
-      navigate('/correctAnswer', { state: { cntLife } });
-    } else {
-      if (cntLife - 1 <= 0) {
-        navigate('/wrongAnswer');
+      setCntLife(data.remainingLife);
+      setRuntime(data.runtime);
+      setCompiledError(data.syntaxError);
+      setRewardCoin(data.rewardCoin);
+      setMessage(data.message);
+
+      if (code.trim() === correctCode.trim() && data.success) {
+        navigate('/correctAnswer', {
+          state: { cntLife, rewardCoin: cntLife * 10 },
+        });
       } else {
-        setCntLife((prevLife) => prevLife - 1);
+        alert(`런타임: ${data.runtime}\n컴파일 에러: ${data.syntaxError}`);
+        if (data.remainingLife <= 0) {
+          navigate('/wrongAnswer');
+        }
       }
+    } catch (error) {
+      console.error('Error:', error);
     }
   };
 
@@ -179,8 +217,13 @@ function Solve({ isLoggedIn, setIsLoggedIn }) {
                 </NavigationBar>
               </NavigationBarWrapper>
               <ProblemContainer>
-                <Title>사칙연산</Title>
-                <p>문제 설명...</p>
+                <Title>입출력하기</Title>
+                <p>
+                  이름, 나이를 입력하면 다음과 같이 출력되도록 코드를
+                  작성해보세요.
+                </p>
+                <p>입력 : 홍길동 24</p>
+                <p>출력 : 제 이름은 홍길동이고, 나이는 24살 입니다.</p>
               </ProblemContainer>
               <SolutionContainer>
                 <TextArea
@@ -188,6 +231,9 @@ function Solve({ isLoggedIn, setIsLoggedIn }) {
                   onChange={(e) => setCode(e.target.value)}
                 />
                 <button onClick={handleSubmit}>제출</button>
+                <div>
+                  <p>{message}</p>
+                </div>
               </SolutionContainer>
             </div>
           </ContentWrapper>

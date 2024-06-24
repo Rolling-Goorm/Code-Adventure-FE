@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom'; // useNavigate import
 import { AuthContext } from './AuthContext';
-import Title from '../assets/title.png'; // 업로드된 파일 경로
+import title from '../assets/title.png'; // 업로드된 파일 경로
 
 // Styled components
 const HeaderContainer = styled.header`
@@ -23,6 +23,7 @@ const HeaderContainer = styled.header`
 const LogoContainer = styled.div`
   display: flex;
   align-items: center;
+  cursor: pointer; /* 호버 시 커서 변경 */
 `;
 
 const Logo = styled.img`
@@ -46,15 +47,19 @@ const Header = () => {
     localStorage.clear(); // 로컬 스토리지 비우기
     navigate('/'); // 홈으로 이동
   };
+  const handleLogoClick = () => {
+    navigate('/'); // 로고 클릭 시 홈으로 이동
+  };
 
   return (
     <HeaderContainer>
-      <LogoContainer>
-        <Logo src={Title} alt="Logo" />
+      <LogoContainer onClick={handleLogoClick}>
+        <Logo src={title} alt="Logo" />
       </LogoContainer>
       <Nav>
         {user ? (
           <>
+            <a href="/selectlanguage">언어선택</a>
             <a href="/selectcategory">카테고리</a>
             <a href="/selectstages">스테이지</a>
             <a href="/mypages">마이 페이지</a>
@@ -66,6 +71,7 @@ const Header = () => {
         ) : (
           <>
             <a href="/signup">회원가입</a>
+            <a href="/gameinfo">게임소개</a>
           </>
         )}
       </Nav>
